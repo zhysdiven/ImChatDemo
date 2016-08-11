@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="8dp"
+    android:paddingRight="8dp"
+    android:layout_marginTop="8dp">
+
+    <TextView
+        android:id="@+id/chatmsg_txt_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/shap_circle_bg"
+        android:layout_marginTop="8dp"
+        android:padding="2dp"
+        android:text="10:52"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/chatmsg_draww_head"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/chatmsg_txt_time"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="4dp"
+        fresco:placeholderImage="@mipmap/ic_default_head2"
+        fresco:placeholderImageScaleType="fitCenter"
+        fresco:roundAsCircle="true"
+        fresco:roundedCornerRadius="4dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/layout_video"
+        android:layout_width="200dp"
+        android:layout_height="140dp"
+        android:layout_alignTop="@id/chatmsg_draww_head"
+        android:layout_toLeftOf="@id/chatmsg_draww_head"
+        android:layout_marginRight="-30dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/content_pic"
+            android:layout_width="200dp"
+            android:layout_height="140dp"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:placeholderImage="@mipmap/ic_default_pic"
+            fresco:placeholderImageScaleType="focusCrop"  android:visibility="visible"
+            />
+
+        <ImageView
+            android:id="@+id/iv_video_tag"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/im_large_vedio_play"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/chatmsg_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@id/chatmsg_draww_head"
+        android:layout_toLeftOf="@id/chatmsg_draww_head"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="60dp"
+        android:background="@mipmap/im_msg_my"
+         >
+
+        <TextView
+            android:id="@+id/content_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:text="ssssssssssssssssss" android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/content_voice"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@mipmap/im_audio_play_my_v3"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/im_msg_error"
+        android:layout_marginRight="-60dp" android:layout_marginTop="12dp"
+        android:layout_toLeftOf="@+id/chatmsg_content"
+        android:layout_alignTop="@+id/chatmsg_draww_head"
+        android:visibility="visible"/>
+
+    <ProgressBar
+        android:id="@+id/probar_msg"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@id/chatmsg_draww_head"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@id/chatmsg_content"
+        android:visibility="gone"/>
+
+</RelativeLayout>

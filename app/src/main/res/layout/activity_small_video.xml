@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.admin.myapplication.SmallVideoActivity">
+
+    <SurfaceView
+        android:id="@+id/smallvideo_sfview_camera"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/smallvideo_sd_prewdrawable"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:orientation="vertical"
+        android:background="#000000">
+
+        <ProgressBar
+            android:id="@+id/smallvideo_pbar_time"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            style="@android:style/Widget.ProgressBar.Horizontal"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+          <Button
+              android:id="@+id/smallvideo_btn_reset"
+              android:layout_width="72dp"
+              android:layout_height="72dp"
+              android:background="@mipmap/no_data"
+              android:layout_alignParentLeft="true"
+              android:layout_centerVertical="true"
+              android:visibility="invisible"
+              android:layout_marginLeft="16dp"/>
+
+            <!--video_send-->
+            <Button
+                android:id="@+id/smallvideo_btn_send"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@mipmap/video_record"
+                android:layout_centerInParent="true"
+                android:layout_margin="16dp"/>
+
+            <Button
+                android:id="@+id/smallvideo_btn_play"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@mipmap/im_preview_video"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="invisible"
+                android:layout_marginRight="16dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/smallvideo_txt_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:layout_marginTop="16dp"
+            android:text="收起"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/chatmsg_txt_time"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:gravity="center"
+        android:background="@drawable/shap_circle_bg"
+        android:padding="2dp"
+        android:text="10:52"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/chatmsg_draww_head"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/chatmsg_txt_time"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        fresco:actualImageScaleType="focusCrop"
+        fresco:placeholderImage="@mipmap/ic_default_head1"
+        fresco:placeholderImageScaleType="fitCenter"
+        fresco:roundAsCircle="true"
+        fresco:roundedCornerRadius="4dp" android:layout_marginBottom="4dp"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/layout_video"
+        android:layout_width="200dp"
+        android:layout_height="140dp"
+        android:layout_toRightOf="@id/chatmsg_draww_head"
+        android:layout_alignTop="@id/chatmsg_draww_head"
+        android:layout_marginLeft="-30dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/content_pic"
+            android:layout_width="200dp"
+            android:layout_height="140dp"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:placeholderImage="@mipmap/ic_default_pic"
+            fresco:placeholderImageScaleType="focusCrop"  android:visibility="visible"
+            />
+
+        <ImageView
+            android:id="@+id/iv_video_tag"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/im_large_vedio_play"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+    <VideoView
+        android:id="@+id/video_play"
+        android:layout_width="120dp"
+        android:layout_height="160dp"
+        android:layout_alignTop="@id/chatmsg_draww_head"
+        android:layout_toLeftOf="@id/chatmsg_draww_head"
+        android:background="@mipmap/r_video_msg" android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/chatmsg_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@id/chatmsg_draww_head"
+        android:layout_toRightOf="@id/chatmsg_draww_head"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="4dp"
+        android:background="@mipmap/im_msg_others"
+         >
+
+        <TextView
+            android:id="@+id/content_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:text="ssssssssssssssssss"  android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/content_voice"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/im_audio_play_other_v3" android:visibility="gone" />
+
+    </LinearLayout>
+
+</RelativeLayout>
