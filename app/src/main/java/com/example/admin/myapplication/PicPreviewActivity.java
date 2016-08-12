@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.example.admin.myapplication.utils.BitmapUtils;
 
 public class PicPreviewActivity extends AppCompatActivity {
 
-    private static final String TAG = PicPreviewActivity.class.getSimpleName();
     private ImageView ivPic;
 
     @Override
@@ -61,11 +59,5 @@ public class PicPreviewActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i(TAG, "onStop: clear bitmap");
-        ivPic.setImageBitmap(null);
-        ivPic = null;
-    }
+
 }

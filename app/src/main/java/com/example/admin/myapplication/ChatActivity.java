@@ -58,6 +58,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView btnBack, btnSetting, btnMore, btnImg, btnChanges;
     private Button /*btnMore,*/btnVoice/*,btnImg*/;
+    private TextView txtTitle;
     private RecyclerView recyChatMsg, recyInputMore, recyInputFace;
     private EditText edtInput;
     private boolean isTypeWord, isMoreTool, isShowFace;
@@ -147,12 +148,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         initVoice();
     }
 
+    private boolean isStartAudioRd;
+
     private void initVoice() {
         btnVoice.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Log.d(TAG, "开始录音---------------->");
                 btnVoice.setText("松开发送");
+                isStartAudioRd = true;
                 showAudioDialog();
                 return false;
             }
@@ -173,6 +177,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private void audioRecordEndEvent() {
         stopRecord();
+        isStartAudioRd = false;
         btnVoice.setText("按下录音");
         closeAudioDialog();
         if (audioCount <= 1) {
@@ -183,6 +188,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    private int count;
 
     private void initview() {
         btnBack = (ImageView) findViewById(R.id.btn_back);
@@ -206,12 +213,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         edtInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -306,6 +311,23 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         recyChatMsg.setLayoutManager(new LinearLayoutManager(this));
         recyChatMsg.setItemAnimator(new DefaultItemAnimator());
         recyChatMsg.setAdapter(msgAdapter);
+//        recyChatMsg.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                int y,y1;
+//                switch (event.getAction()){
+//                    case MotionEvent.ACTION_DOWN:
+//                        y = (int) v.getY();
+//                        Log.d(TAG,"down y:"+y);
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        y1 = (int) v.getY();
+//                        Log.d(TAG,"move y:"+y1);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
         recyChatMsg.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -406,6 +428,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private int firstpositonIdle, lastpositonIdle; //静止时的第一可见项
+    private int firstpostions, lastpositons;
+    private boolean isFastScrolling;
 
     public List<ChatItemBean> getChatTools() {
         List<ChatItemBean> list = new ArrayList<>();

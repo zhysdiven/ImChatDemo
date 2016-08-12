@@ -44,9 +44,7 @@
             android:id="@+id/content_pic"
             android:layout_width="200dp"
             android:layout_height="140dp"
-            fresco:actualImageScaleType="focusCrop"
-            fresco:placeholderImage="@null"
-            android:visibility="gone"
+            fresco:actualImageScaleType="focusCrop"  android:visibility="gone"
             />
 
     </RelativeLayout>

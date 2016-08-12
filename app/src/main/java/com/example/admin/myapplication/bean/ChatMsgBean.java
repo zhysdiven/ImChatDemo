@@ -1,9 +1,7 @@
 package com.example.admin.myapplication.bean;
 
 /**
- *
- * @Created Zhy
- * @date 2016/8/49:17
+ * Created by Admin on 2016/8/4.
  */
 public class ChatMsgBean {
 

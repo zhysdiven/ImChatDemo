@@ -12,9 +12,7 @@ import com.example.admin.myapplication.bean.ChatItemBean;
 import java.util.List;
 
 /**
- *
- * @Created Admin
- * @date 2016/8/49:17
+ * Created by Admin on 2016/8/4.
  */
 public class ChatMoreAdapter extends RecyclerView.Adapter<ChatMoreAdapter.ViewHolder> {
 
