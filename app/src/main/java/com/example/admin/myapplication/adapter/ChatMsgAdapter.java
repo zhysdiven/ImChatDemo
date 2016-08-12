@@ -40,7 +40,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Admin on 2016/8/4.
+ *
+ * @Created Zhy
+ * @date 2016/8/49:17
  */
 public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHolders> {
 
@@ -108,7 +110,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
             if (chatMsgBean.getType()==2) holder.icError.setVisibility(View.GONE);
         }
 
-        if (TextUtils.isEmpty(chatMsgBean.getTime())){
+        if (TextUtils.isEmpty(chatMsgBean.getTime()) || getItemViewType(position)==1){
             holder.txtTime.setVisibility(View.GONE);
         }else {
             holder.txtTime.setVisibility(View.VISIBLE);
@@ -139,7 +141,10 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
             holder.txtContent.setVisibility(View.GONE);
             holder.icVoice.setVisibility(View.GONE);
             if (getItemViewType(position) == 0){
-                showImage(R.mipmap.im_msg_my,holder.picture,chatMsgBean.getMsg());
+
+                holder.picture.setTag(chatMsgBean.getMsg());
+                Log.e(TAG, "onBindViewHolder: " + chatMsgBean.getMsg());
+                showImage(R.mipmap.im_msg_my, holder.picture, chatMsgBean.getMsg());
             }   else {
                 showImage(R.mipmap.im_msg_others,holder.picture, chatMsgBean.getMsg());
             }
@@ -194,10 +199,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
                         return false;
                     }
                 });
-            }   else {
-//                showImage(R.mipmap.im_msg_others,holder.picture, chatMsgBean.getMsg());
             }
-
             holder.layout_video.setVisibility(View.GONE);
         }else { //文本
             changeFace(holder.txtContent,chatMsgBean.getMsg());
@@ -249,8 +251,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
             }
         });
 
-        Log.i(TAG,"view width :"+holder.itemView.getWidth()+",height:"+holder.itemView.getHeight());
-
+//        Log.i(TAG,"view width :"+holder.itemView.getWidth()+",height:"+holder.itemView.getHeight());
     }
     private void showPopWindow(View v, final int position) {
         View view = LayoutInflater.from(activity).inflate(R.layout.layout_msg_popwindow,null);
@@ -334,7 +335,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
         return s;
     }
 
-    private void showImage(final int bg, final ImageView imageView, final String picture){
+    private void showImage(final int bg, final SimpleDraweeView imageView, final String picture){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -346,8 +347,8 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
                     bitmap_in = BitmapUtils.decodeSampledBitmapFromResource(picture,190,230);
                 }
                 final Bitmap bp = BitmapUtils.getRoundCornerImage(bitmap_bg, bitmap_in);
-//                final Bitmap bp2 = BitmapUtils.getShardImage(bitmap_bg, bp);
-
+                final Bitmap bp2 = BitmapUtils.getShardImage(bitmap_bg, bp);
+//
                 if (bitmap_bg != null)bitmap_bg.recycle();
                 bitmap_bg = null;
                 if (bitmap_in != null)bitmap_in.recycle();
@@ -357,7 +358,13 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ViewHold
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        imageView.setImageBitmap(bp);
+                        if (imageView.getTag().equals(picture)) {
+                            Log.d(TAG, "onBindViewHolder: new bitmap to load of holder.picture :");
+                            imageView.setImageBitmap(bp);
+                        }else {
+//                            imageView.setImageBitmap(null);
+                            Log.e(TAG, "onBindViewHolder: new bitmap to load of holder.picture :");
+                        }
                     }
                 });
             }

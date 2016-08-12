@@ -12,7 +12,9 @@ import java.util.List;
 
 
 /**
- * Created by Admin on 2016/8/4.
+ *
+ * @Created Admin
+ * @date 2016/8/49:16
  */
 public class FaceAdapter extends RecyclerView.Adapter<FaceAdapter.ViewHolder>{
 
