@@ -100,13 +100,11 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
         btnSend.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.i(TAG,"onLongClick 开始录制--->");
                 if (!isRecordEnded) {
-                    vibrator.vibrate(100);
+                    Log.i(TAG,"onLongClick initMediaRecord--->");
                     initMediaRecord();
-                    isStartRecord = true;
                     isTypeSend = false;
-                    handler.sendEmptyMessage(10);
+                    handler.sendEmptyMessageDelayed(100,1000);
                 }
                 return true;
             }
@@ -117,17 +115,22 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
 //                        isRecordEnded = false;
+                        Log.i(TAG, "onTouch: 手指按下");
                         break;
                     case MotionEvent.ACTION_UP:
+                        Log.i(TAG, "onTouch: 手指抬起");
+                        handler.removeMessages(100);
                         handler.removeMessages(10);
                         if (isTypeSend){
                            sendVideo();
                         }else {
                             if (!isRecordEnded){
+                                Log.i(TAG, "onTouch: isRecordEnded false");
                                 if (count <= 20){
-                                    if (recorder != null){
+                                    if (recorder != null && isStartRecord){
                                         try {
                                             recorder.stop();
+                                            Log.i(TAG, "onTouch: recorder stop");
                                         } catch (IllegalStateException e) {
                                             e.printStackTrace();
                                         }
@@ -135,13 +138,16 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
                                     Toast.makeText(getApplicationContext(),"录制时间过短,请重新录制!",Toast.LENGTH_SHORT).show();
                                     count = 0;
                                     progressBar.setProgress(0);
+                                    Log.i(TAG, "onTouch: record time short ");
                                 }else { //录制成功
+                                    Log.i(TAG, "onTouch: record success ");
                                     stopRecord();
                                     recordSuccess();
+                                    isRecordEnded = true;//标志录制完成
+                                    isStartRecord = false;
                                 }
                                 stopTimer();
                             }
-                            isRecordEnded = true;//标志录制完成
                         }
                         break;
                 }
@@ -160,7 +166,7 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
-        if (camera != null){
+        if (camera != null && count > 30){
             camera.takePicture(null, null, new Camera.PictureCallback() {
                 @Override
                 public void onPictureTaken(byte[] data, Camera camera) {
@@ -225,11 +231,31 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
                 if (count <= 300) {
                     sendEmptyMessageDelayed(10, 100); //每0.1s发送一次
                 }else {
-                    count = 0;
+                    Log.i(TAG, "handleMessage: recorder success");
                     recordSuccess();
                     stopRecord();
+                    count = 0;
                     isRecordEnded = true;
                     stopTimer();
+                }
+            } else if (msg.what == 100){
+                try {
+//                    vibrator.vibrate(100);
+                    Log.i(TAG, "handleMessage: recorder start");
+                    recorder.prepare();
+                    recorder.start();
+                    isStartRecord = true;
+                    sendEmptyMessage(10);
+                    Log.i(TAG, "handleMessage: recorder start success");
+                } catch (Exception e) {
+                    Log.e(TAG, "handleMessage: recorder start fail");
+                    e.printStackTrace();
+                    recorder.release();
+                    recorder = null;
+                    if (camera !=null) {
+                        camera.release();
+                        camera = null;
+                    }
                 }
             }
         }
@@ -240,6 +266,7 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
 
     public void initMediaRecord(){
         if (camera != null) {
+            Log.i(TAG, "initMediaRecord: release camera ");
             camera.stopPreview();
             camera.release();
             camera = null;
@@ -248,6 +275,7 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
         recorder = new MediaRecorder();
         recorder.reset();
 
+        Log.i(TAG, "initMediaRecord: reset init camera ");
         camera = Camera.open();
         // 设置摄像头预览顺时针旋转90度，才能使预览图像显示为正确的，而不是逆时针旋转90度的。
         camera.setDisplayOrientation(90);
@@ -272,9 +300,9 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
             }
-        },0,3000);
+        },3000,3000);
         camera.unlock();
-
+        Log.i(TAG, "initMediaRecord: start ");
         recorder.setCamera(camera);
         recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -289,19 +317,7 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
         recorder.setVideoEncodingBitRate(5*1024*1024);// 设置帧频率，然后就清晰了
         videoPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator+"smallvideo_"+System.currentTimeMillis()+ ".mp4";
         recorder.setOutputFile(/*Environment.getExternalStorageDirectory().getAbsolutePath()+"/xxx2.mp4"*/videoPath);
-
-        try {
-            recorder.prepare();
-            recorder.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-            recorder.release();
-            recorder = null;
-            if (camera !=null) {
-                camera.release();
-                camera = null;
-            }
-        }
+        Log.i(TAG, "initMediaRecord: ended ");
     }
 
 
@@ -322,6 +338,8 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
                 surfaceView.setVisibility(View.VISIBLE);
                 draweeView.setVisibility(View.GONE);
                 isStartRecord = false;
+                isRecordEnded = false;
+                isTypeSend = false;
                 if (camera != null){
                     camera.startPreview();
                 }
@@ -363,6 +381,7 @@ public class SmallVideoActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.d(TAG,"surfaceChanged()====================>");
+        if (camera == null) return;
         camera.setDisplayOrientation(90);
         camera.startPreview();
     }
